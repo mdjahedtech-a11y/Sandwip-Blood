@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
-import { BLOOD_GROUPS } from '@/types';
+import { BLOOD_GROUPS } from '@/types/index';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { calculateNextEligibleDate } from '@/lib/utils';
-import { Upload, Calendar, User, Phone, MapPin, Droplet } from 'lucide-react';
+import { Upload, Calendar, User, Phone, MapPin, Droplet, Mail, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface RegisterFormInputs {
   name: string;
+  email: string;
+  password: string;
   blood_group: string;
   phone: string;
   area: string;
@@ -46,9 +48,27 @@ export const Register = () => {
   const onSubmit = async (data: RegisterFormInputs) => {
     setLoading(true);
     try {
+      // 1. Sign Up User
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (authError) {
+        toast.error(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      if (!authData.user) {
+        toast.error('Registration failed. Please try again.');
+        setLoading(false);
+        return;
+      }
+
       let photoUrl = null;
 
-      // 1. Upload Photo if selected
+      // 2. Upload Photo if selected
       if (data.photo && data.photo.length > 0) {
         const file = data.photo[0];
 
@@ -78,16 +98,14 @@ export const Register = () => {
         }
       }
 
-      // 2. Calculate Next Eligible Date (Handled by Database Generated Column)
-      // const nextEligibleDate = ... 
-
       // 3. Insert Donor Data
-      // Note: next_eligible_date is a generated column in the database, so we don't insert it.
       const { error: insertError } = await supabase
         .from('donors')
         .insert([
           {
+            user_id: authData.user.id, // Link to Auth User
             name: data.name,
+            email: data.email, // Store email in donors table too
             blood_group: data.blood_group,
             phone: data.phone,
             area: data.area,
@@ -98,15 +116,15 @@ export const Register = () => {
 
       if (insertError) {
         console.error('Supabase Insert Error:', insertError);
-        if (insertError.code === '23505') { // Unique violation for phone
-          toast.error('This phone number is already registered.');
+        if (insertError.code === '23505') { // Unique violation
+          toast.error('This phone number or email is already registered.');
         } else {
           toast.error(`Registration failed: ${insertError.message}`);
-          throw insertError;
+          // Optional: Delete the auth user if donor insert fails to keep clean state
         }
       } else {
-        toast.success('Registration successful! Thank you for being a donor.');
-        navigate('/donors');
+        toast.success('Registration successful! Please login to manage your profile.');
+        navigate('/login');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -135,6 +153,35 @@ export const Register = () => {
                 placeholder="Enter your full name"
                 {...register('name', { required: 'Name is required' })}
                 error={errors.name?.message}
+              />
+            </div>
+
+            {/* Email */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Mail className="w-4 h-4" /> Email Address
+              </label>
+              <Input
+                type="email"
+                placeholder="you@example.com"
+                {...register('email', { required: 'Email is required' })}
+                error={errors.email?.message}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Lock className="w-4 h-4" /> Password
+              </label>
+              <Input
+                type="password"
+                placeholder="Create a password"
+                {...register('password', { 
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Must be at least 6 characters' }
+                })}
+                error={errors.password?.message}
               />
             </div>
 
@@ -245,6 +292,15 @@ export const Register = () => {
             >
               {loading ? 'Registering...' : 'Register Now'}
             </Button>
+          </div>
+          
+          <div className="text-center mt-4">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-red-600 hover:underline font-medium">
+                Login here
+              </Link>
+            </p>
           </div>
         </form>
       </Card>

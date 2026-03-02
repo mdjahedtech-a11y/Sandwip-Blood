@@ -5,6 +5,8 @@ import { Donors } from '@/pages/Donors';
 import { Register } from '@/pages/Register';
 import { Requests } from '@/pages/Requests';
 import { Admin } from '@/pages/Admin';
+import { Login } from '@/pages/Login';
+import { Profile } from '@/pages/Profile';
 
 export default function App() {
   return (
@@ -16,6 +18,8 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
     </Router>

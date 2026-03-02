@@ -1,10 +1,27 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, Facebook } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, Facebook, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export const Navbar = () => {
   const location = useLocation();
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -70,6 +87,20 @@ export const Navbar = () => {
                 Admin
               </Button>
             </Link>
+            
+            {session ? (
+              <Link to="/profile">
+                <Button variant="default" size="sm" className="gap-2">
+                  <User className="w-4 h-4" /> Profile
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/login">
+                <Button variant="default" size="sm">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button - Hidden since we have Bottom Nav */}
@@ -82,9 +113,15 @@ export const Navbar = () => {
             >
               <Facebook className="w-5 h-5" />
             </a>
-            <Link to="/admin">
-               <Button variant="ghost" size="sm">Admin</Button>
-            </Link>
+            {session ? (
+              <Link to="/profile">
+                 <Button variant="ghost" size="sm"><User className="w-5 h-5" /></Button>
+              </Link>
+            ) : (
+              <Link to="/login">
+                 <Button variant="ghost" size="sm">Login</Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
