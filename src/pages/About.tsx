@@ -87,6 +87,87 @@ export const About = () => {
         </motion.div>
       </motion.div>
 
+      {/* Benefits of Blood Donation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="space-y-8"
+      >
+        <h2 className="text-3xl font-bold text-center text-gray-900">The Power of Giving</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Duniya Benefits */}
+          <Card className="p-8 border-none shadow-lg bg-gradient-to-br from-orange-50 to-amber-50">
+            <h3 className="text-2xl font-bold text-orange-700 mb-4 flex items-center gap-2">
+              <Heart className="w-6 h-6" />
+              In This World (Duniya)
+            </h3>
+            <ul className="space-y-3 text-gray-700">
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-orange-400 rounded-full shrink-0" />
+                <span><strong>Heart Health:</strong> Regular donation reduces the risk of heart attacks and strokes by lowering excess iron.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-orange-400 rounded-full shrink-0" />
+                <span><strong>Cell Renewal:</strong> Stimulates the production of new blood cells, keeping you healthy and energized.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-orange-400 rounded-full shrink-0" />
+                <span><strong>Free Health Check:</strong> Get a mini-physical and find out your blood type for free.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-orange-400 rounded-full shrink-0" />
+                <span><strong>Mental Well-being:</strong> The unparalleled joy and satisfaction of saving a human life.</span>
+              </li>
+            </ul>
+          </Card>
+
+          {/* Akhirat Benefits */}
+          <Card className="p-8 border-none shadow-lg bg-gradient-to-br from-teal-50 to-emerald-50">
+            <h3 className="text-2xl font-bold text-teal-700 mb-4 flex items-center gap-2">
+              <Award className="w-6 h-6" />
+              In The Hereafter (Akhirat)
+            </h3>
+            <ul className="space-y-3 text-gray-700">
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-teal-400 rounded-full shrink-0" />
+                <span><strong>Saving Humanity:</strong> "And whoever saves one - it is as if he had saved mankind entirely." (Quran 5:32)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-teal-400 rounded-full shrink-0" />
+                <span><strong>Sadqa-e-Jariyah:</strong> A continuous charity that benefits you even after death.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-teal-400 rounded-full shrink-0" />
+                <span><strong>Allah's Mercy:</strong> Helping someone in distress brings down the mercy and blessings of Allah.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 w-2 h-2 bg-teal-400 rounded-full shrink-0" />
+                <span><strong>Forgiveness:</strong> Acts of kindness and charity are a means of forgiveness for sins.</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+
+      {/* Video Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-red-100 bg-black aspect-video group mx-auto max-w-4xl"
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-red-600/20 to-purple-600/20 z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-500" />
+        <iframe 
+          className="w-full h-full"
+          src="https://www.youtube.com/embed/ODRb1fP31L0?si=QOkAHqfnfG00lR5F" 
+          title="Blood Donation Awareness"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowFullScreen
+        ></iframe>
+      </motion.div>
+
       {/* Why Choose Us */}
       <motion.div 
         initial={{ opacity: 0 }}
