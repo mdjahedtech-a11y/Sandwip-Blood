@@ -63,51 +63,53 @@ export const Donors = () => {
 
       {/* Filters */}
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-4">
-        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
                 placeholder="Search by Area (e.g., Harishpur)"
-                className="pl-10"
+                className="pl-10 w-full"
                 value={searchArea}
                 onChange={(e) => setSearchArea(e.target.value)}
               />
             </div>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="w-full sm:w-auto">
             Search
           </Button>
         </form>
 
-        <div className="flex flex-wrap gap-2">
-          <span className="flex items-center text-sm font-medium text-gray-700 mr-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <span className="flex items-center text-sm font-medium text-gray-700">
             <Filter className="w-4 h-4 mr-1" />
-            Filter:
+            Filter by Group:
           </span>
-          <button
-            onClick={() => setSelectedBloodGroup('')}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-              selectedBloodGroup === ''
-                ? 'bg-gray-800 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            All
-          </button>
-          {BLOOD_GROUPS.map((bg) => (
+          <div className="flex flex-wrap gap-2">
             <button
-              key={bg}
-              onClick={() => setSelectedBloodGroup(bg)}
+              onClick={() => setSelectedBloodGroup('')}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                selectedBloodGroup === bg
-                  ? 'bg-red-600 text-white'
-                  : 'bg-red-50 text-red-600 hover:bg-red-100'
+                selectedBloodGroup === ''
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {bg}
+              All
             </button>
-          ))}
+            {BLOOD_GROUPS.map((bg) => (
+              <button
+                key={bg}
+                onClick={() => setSelectedBloodGroup(bg)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  selectedBloodGroup === bg
+                    ? 'bg-red-600 text-white'
+                    : 'bg-red-50 text-red-600 hover:bg-red-100'
+                }`}
+              >
+                {bg}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

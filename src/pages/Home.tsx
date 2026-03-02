@@ -98,32 +98,32 @@ export const Home = () => {
       </section>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="p-3 bg-red-100 rounded-full text-red-600">
-            <Users className="w-8 h-8" />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+        <Card className="p-4 md:p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="p-3 bg-red-100 rounded-full text-red-600 shrink-0">
+            <Users className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Active Donors</p>
-            <h3 className="text-2xl font-bold text-gray-900">1,200+</h3>
+            <p className="text-xs md:text-sm text-gray-500 font-medium">Active Donors</p>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900">1,200+</h3>
           </div>
         </Card>
-        <Card className="p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="p-3 bg-green-100 rounded-full text-green-600">
-            <Heart className="w-8 h-8" />
+        <Card className="p-4 md:p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="p-3 bg-green-100 rounded-full text-green-600 shrink-0">
+            <Heart className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Lives Saved</p>
-            <h3 className="text-2xl font-bold text-gray-900">3,500+</h3>
+            <p className="text-xs md:text-sm text-gray-500 font-medium">Lives Saved</p>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900">3,500+</h3>
           </div>
         </Card>
-        <Card className="p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="p-3 bg-blue-100 rounded-full text-blue-600">
-            <Activity className="w-8 h-8" />
+        <Card className="p-4 md:p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="p-3 bg-blue-100 rounded-full text-blue-600 shrink-0">
+            <Activity className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Requests Fulfilled</p>
-            <h3 className="text-2xl font-bold text-gray-900">98%</h3>
+            <p className="text-xs md:text-sm text-gray-500 font-medium">Requests Fulfilled</p>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900">98%</h3>
           </div>
         </Card>
       </div>

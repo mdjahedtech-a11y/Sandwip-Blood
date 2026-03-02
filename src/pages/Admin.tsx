@@ -167,22 +167,22 @@ export const Admin = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blood Group</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Group</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Phone</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {donors.map((donor) => (
                   <tr key={donor.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{donor.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{donor.blood_group}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{donor.phone}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{donor.name}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{donor.blood_group}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{donor.phone}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       <button
                         onClick={() => handleDeleteDonor(donor.id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-red-600 hover:text-red-900 p-2"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
@@ -203,27 +203,27 @@ export const Admin = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blood Group</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Patient</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Group</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {requests.map((req) => (
                   <tr key={req.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{req.patient_name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{req.blood_group}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{req.patient_name}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{req.blood_group}</td>
+                    <td className="px-4 py-4 whitespace-nowrap">
                       <Badge variant={req.status === 'completed' ? 'success' : 'warning'}>
                         {req.status}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
                       {req.status !== 'completed' && (
                         <button
                           onClick={() => handleCompleteRequest(req.id)}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-green-600 hover:text-green-900 p-2"
                           title="Mark as Completed"
                         >
                           <CheckCircle className="w-5 h-5" />

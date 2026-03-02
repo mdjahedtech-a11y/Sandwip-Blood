@@ -147,34 +147,34 @@ export const Requests = () => {
         ) : (
           requests.map((req) => (
             <Card key={req.id} className="border-l-4 border-l-red-500 hover:shadow-md transition-shadow">
-              <div className="flex flex-col md:flex-row justify-between gap-4">
+              <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant={req.status === 'completed' ? 'success' : 'danger'}>
                       {req.status === 'completed' ? 'Fulfilled' : 'Urgent'}
                     </Badge>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <span className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
                       <Clock className="w-3 h-3" /> Posted: {formatDate(req.created_at)}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">{req.patient_name}</h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900">{req.patient_name}</h3>
+                  <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-gray-600">
                     <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4 text-red-500" /> {req.hospital}
+                      <MapPin className="w-4 h-4 text-red-500 shrink-0" /> {req.hospital}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-red-500" /> Required: {formatDate(req.required_date)}
+                      <Calendar className="w-4 h-4 text-red-500 shrink-0" /> Required: {formatDate(req.required_date)}
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-end gap-2">
-                  <span className="text-3xl font-black text-red-600 bg-red-50 px-3 py-1 rounded-xl">
+                <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 border-t sm:border-t-0 pt-3 sm:pt-0 mt-2 sm:mt-0">
+                  <span className="text-2xl sm:text-3xl font-black text-red-600 bg-red-50 px-3 py-1 rounded-xl">
                     {req.blood_group}
                   </span>
-                  <a href={`tel:${req.contact_number}`}>
-                    <Button size="sm" className="gap-2">
-                      <Phone className="w-4 h-4" /> Call Contact
+                  <a href={`tel:${req.contact_number}`} className="w-full sm:w-auto">
+                    <Button size="sm" className="gap-2 w-full sm:w-auto">
+                      <Phone className="w-4 h-4" /> <span className="sm:hidden">Call</span> <span className="hidden sm:inline">Call Contact</span>
                     </Button>
                   </a>
                 </div>
