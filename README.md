@@ -1,11 +1,51 @@
-<div align="center">
+# Sandwip Blood Donor BD
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A modern blood donor mobile app for connecting donors with patients in Sandwip.
 
-  <h1>Built with AI Studio</h2>
+## Features
+- **Donor Registration:** Easy sign-up with photo upload.
+- **Donor Search:** Filter by blood group and area.
+- **Emergency Requests:** Post and view urgent blood needs.
+- **Admin Panel:** Manage donors and requests.
+- **Responsive Design:** Works perfectly on mobile and desktop.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Tech Stack
+- **Frontend:** React, Vite, Tailwind CSS
+- **Backend:** Supabase (Database, Auth, Storage)
+- **Icons:** Lucide React
+- **Animations:** Framer Motion
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Setup Instructions
 
-</div>
+### 1. Supabase Setup
+Follow the detailed instructions in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) to create your database tables and storage bucket.
+
+### 2. Environment Variables
+Copy `.env.example` to `.env` and fill in your Supabase credentials:
+```bash
+cp .env.example .env
+```
+
+### 3. Install Dependencies
+```bash
+npm install
+```
+
+### 4. Run Locally
+```bash
+npm run dev
+```
+
+## Deployment on Vercel
+
+1. Push this code to a GitHub repository.
+2. Go to [Vercel](https://vercel.com) and import the project.
+3. In the "Environment Variables" section, add:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+4. Click **Deploy**.
+
+## Connecting a Domain
+1. In Vercel, go to **Settings** -> **Domains**.
+2. Enter your domain (e.g., `sandwipblooddonor.com`).
+3. Follow the DNS configuration instructions provided by Vercel.
