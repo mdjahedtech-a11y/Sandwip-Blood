@@ -52,22 +52,65 @@ export const Admin = () => {
     e.preventDefault();
     setLoading(true);
     
-    const email = `${phone.trim()}@sandwip.com`;
+    const input = phone.trim();
+    const isEmail = input.includes('@');
+    const email = isEmail ? input : `${input}@sandwip.com`;
     
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Check if it's the specific admin phone number
+    const ADMIN_PHONE = '01580824066';
+    const ADMIN_PASS = '309106';
 
-    if (error) {
-      if (error.message === 'Invalid login credentials') {
-        toast.error('Invalid phone or password. Is this account registered?');
+    // Special handling for the main admin account via phone number
+    if (!isEmail && input === ADMIN_PHONE && password === ADMIN_PASS) {
+      // Try login first
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (loginError) {
+        if (loginError.message === 'Invalid login credentials') {
+          // If login fails, try to create the admin account automatically
+          const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                name: 'Admin',
+              }
+            }
+          });
+
+          if (signUpError) {
+            console.error('Admin auto-signup error:', signUpError);
+            toast.error(signUpError.message);
+          } else {
+            toast.success('Admin account initialized and logged in');
+          }
+        } else {
+          toast.error(loginError.message);
+        }
       } else {
-        toast.error(error.message);
+        toast.success('Logged in successfully');
       }
     } else {
-      toast.success('Logged in successfully');
+      // Standard login for email or other phone numbers
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        if (error.message === 'Invalid login credentials') {
+          toast.error('Invalid credentials. Please check your input.');
+        } else {
+          toast.error(error.message);
+        }
+      } else {
+        toast.success('Logged in successfully');
+      }
     }
+    
     setLoading(false);
   };
 
@@ -115,8 +158,8 @@ export const Admin = () => {
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
-              type="tel"
-              placeholder="Phone Number"
+              type="text"
+              placeholder="Email or Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
@@ -137,8 +180,10 @@ export const Admin = () => {
     );
   }
 
-  // Check if the logged-in user is the admin
-  if (session.user.email !== '01580824066@sandwip.com') {
+  // Check if the logged-in user is the admin (either by specific email or the phone-based email)
+  const isAdmin = session.user.email === 'mdjahedtech@gmail.com' || session.user.email === '01580824066@sandwip.com';
+
+  if (!isAdmin) {
     return (
       <div className="max-w-md mx-auto mt-10 text-center">
         <Card className="p-8">
