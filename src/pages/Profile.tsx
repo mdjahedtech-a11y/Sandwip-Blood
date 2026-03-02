@@ -33,20 +33,13 @@ export const Profile = () => {
 
   const fetchDonorProfile = async (userId: string) => {
     try {
-      // Try to find donor by user_id
+      // 1. Try to find donor by user_id
       let { data, error } = await supabase
         .from('donors')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching profile:', error);
-      }
-
-      // If not found by user_id, maybe try email if available?
-      // For now, assume user_id is the link.
-      
       if (data) {
         setDonor(data);
         // Set form values
@@ -57,7 +50,7 @@ export const Profile = () => {
         setValue('last_donation_date', data.last_donation_date);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
     }
@@ -66,13 +59,13 @@ export const Profile = () => {
   const onSubmit = async (data: any) => {
     setSaving(true);
     try {
-      let photoUrl = donor?.photo_url;
+      let photoUrl = donor?.photo_url || null;
 
       // Upload new photo if selected
       if (data.photo && data.photo.length > 0) {
         const file = data.photo[0];
-        if (file.size > 110 * 1024) {
-          toast.error('Image size must be less than 110KB');
+        if (file.size > 400 * 1024) {
+          toast.error('Image size must be less than 400KB');
           setSaving(false);
           return;
         }
@@ -101,7 +94,6 @@ export const Profile = () => {
         last_donation_date: data.last_donation_date || null,
         photo_url: photoUrl,
         user_id: user.id, // Ensure link
-        updated_at: new Date().toISOString(),
       };
 
       let error;
@@ -126,7 +118,7 @@ export const Profile = () => {
       fetchDonorProfile(user.id);
     } catch (error: any) {
       console.error('Error updating profile:', error);
-      toast.error('Failed to update profile.');
+      toast.error(error.message || 'Failed to update profile.');
     } finally {
       setSaving(false);
     }
@@ -174,7 +166,7 @@ export const Profile = () => {
                   hover:file:bg-red-100"
                 {...register('photo')}
               />
-              <p className="text-xs text-gray-500 text-center mt-1">Max 110KB. <a href="https://compressjpeg.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Compress here</a></p>
+              <p className="text-xs text-gray-500 text-center mt-1">Max 400KB. <a href="https://compressjpeg.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Compress here</a></p>
             </div>
           </div>
 
@@ -236,7 +228,7 @@ export const Profile = () => {
 
           <div className="pt-4 flex justify-end">
             <Button type="submit" disabled={saving} size="lg">
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? 'Saving...' : (donor ? 'Save Changes' : 'Create Profile')}
               <Save className="w-4 h-4 ml-2" />
             </Button>
           </div>

@@ -5,8 +5,7 @@ import { BLOOD_GROUPS } from '@/types/index';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { calculateNextEligibleDate } from '@/lib/utils';
-import { Upload, Calendar, User, Phone, MapPin, Droplet, Mail, Lock } from 'lucide-react';
+import { Upload, Calendar, User, Phone, MapPin, Droplet, Mail, Lock, UserPlus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -72,9 +71,9 @@ export const Register = () => {
       if (data.photo && data.photo.length > 0) {
         const file = data.photo[0];
 
-        // Check file size (110KB limit)
-        if (file.size > 110 * 1024) {
-          toast.error('Image size must be less than 110KB');
+        // Check file size (400KB limit)
+        if (file.size > 400 * 1024) {
+          toast.error('Image size must be less than 400KB');
           setLoading(false);
           return;
         }
@@ -105,7 +104,6 @@ export const Register = () => {
           {
             user_id: authData.user.id, // Link to Auth User
             name: data.name,
-            email: data.email, // Store email in donors table too
             blood_group: data.blood_group,
             phone: data.phone,
             area: data.area,
@@ -117,13 +115,13 @@ export const Register = () => {
       if (insertError) {
         console.error('Supabase Insert Error:', insertError);
         if (insertError.code === '23505') { // Unique violation
-          toast.error('This phone number or email is already registered.');
+          toast.error('This phone number is already registered.');
         } else {
           toast.error(`Registration failed: ${insertError.message}`);
           // Optional: Delete the auth user if donor insert fails to keep clean state
         }
       } else {
-        toast.success('Registration successful! Please login to manage your profile.');
+        toast.success('Registration successful! Please login.');
         navigate('/login');
       }
     } catch (error) {
@@ -135,7 +133,7 @@ export const Register = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto mt-10">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Become a Donor</h1>
         <p className="text-gray-600 mt-2">Join our community and save lives.</p>
@@ -267,7 +265,7 @@ export const Register = () => {
                 {...register('photo')}
               />
               <div className="flex flex-col gap-1 mt-1">
-                <p className="text-xs text-gray-500">Max size: 110KB.</p>
+                <p className="text-xs text-gray-500">Max size: 400KB.</p>
                 <p className="text-xs text-gray-500">
                   Image too large?{' '}
                   <a 
@@ -291,6 +289,7 @@ export const Register = () => {
               size="lg"
             >
               {loading ? 'Registering...' : 'Register Now'}
+              <UserPlus className="w-4 h-4 ml-2" />
             </Button>
           </div>
           
