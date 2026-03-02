@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { LogIn, Phone, Lock } from 'lucide-react';
+import { LogIn, User, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -16,12 +16,16 @@ export const Login = () => {
   const onSubmit = async (data: any) => {
     setLoading(true);
     try {
-      // Construct dummy email from phone
-      const phone = data.phone.trim();
-      const dummyEmail = `${phone}@sandwip.com`;
+      const input = data.identifier.trim();
+      let email = input;
+
+      // If input doesn't contain '@', treat it as a phone number
+      if (!input.includes('@')) {
+        email = `${input}@sandwip.com`;
+      }
 
       const { error } = await supabase.auth.signInWithPassword({
-        email: dummyEmail,
+        email: email,
         password: data.password,
       });
 
@@ -32,7 +36,7 @@ export const Login = () => {
     } catch (error: any) {
       console.error('Login error:', error);
       if (error.message === 'Invalid login credentials') {
-        toast.error('Invalid phone or password. Have you registered?');
+        toast.error('Invalid email/phone or password. Have you registered?');
       } else {
         toast.error(error.message);
       }
@@ -52,18 +56,22 @@ export const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Phone className="w-4 h-4" /> Phone Number
+              <User className="w-4 h-4" /> Email or Phone Number
             </label>
             <Input
-              placeholder="01XXXXXXXXX"
-              {...register('phone', { 
-                required: 'Phone number is required',
-                pattern: {
-                  value: /^01[3-9]\d{8}$/,
-                  message: 'Invalid Bangladeshi phone number',
+              placeholder="Enter email or phone (e.g. 01XXXXXXXXX)"
+              {...register('identifier', { 
+                required: 'Email or Phone number is required',
+                validate: (value) => {
+                  const isEmail = /\S+@\S+\.\S+/.test(value);
+                  const isPhone = /^01[3-9]\d{8}$/.test(value);
+                  if (!isEmail && !isPhone) {
+                    return 'Please enter a valid email or Bangladeshi phone number';
+                  }
+                  return true;
                 }
               })}
-              error={errors.phone?.message as string}
+              error={errors.identifier?.message as string}
             />
           </div>
 
