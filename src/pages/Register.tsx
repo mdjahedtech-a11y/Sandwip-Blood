@@ -51,6 +51,14 @@ export const Register = () => {
       // 1. Upload Photo if selected
       if (data.photo && data.photo.length > 0) {
         const file = data.photo[0];
+
+        // Check file size (110KB limit)
+        if (file.size > 110 * 1024) {
+          toast.error('Image size must be less than 110KB');
+          setLoading(false);
+          return;
+        }
+
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `${fileName}`;
@@ -211,6 +219,20 @@ export const Register = () => {
                   hover:file:bg-red-100"
                 {...register('photo')}
               />
+              <div className="flex flex-col gap-1 mt-1">
+                <p className="text-xs text-gray-500">Max size: 110KB.</p>
+                <p className="text-xs text-gray-500">
+                  Image too large?{' '}
+                  <a 
+                    href="https://compressjpeg.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Compress it here
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
 
