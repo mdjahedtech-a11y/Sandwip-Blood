@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { User, Phone, MapPin, Droplet, Calendar, Upload, Save, LogOut, Edit2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { formatDate } from '@/lib/utils';
+import { formatDate, calculateNextEligibleDate } from '@/lib/utils';
 
 export const Profile = () => {
   const [user, setUser] = useState<any>(null);
@@ -54,7 +54,15 @@ export const Profile = () => {
       }
 
       if (data) {
-        setDonor(data);
+        // Calculate next eligible date if last donation date exists
+        const donorData = {
+          ...data,
+          next_eligible_date: data.last_donation_date 
+            ? calculateNextEligibleDate(data.last_donation_date) 
+            : null
+        };
+        
+        setDonor(donorData);
         // Set form values
         setValue('name', data.name);
         setValue('phone', data.phone);

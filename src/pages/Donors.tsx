@@ -7,12 +7,15 @@ import { Button } from '@/components/ui/Button';
 import { Search, Filter, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import toast from 'react-hot-toast';
+import { useSearchParams } from 'react-router-dom';
 
 export const Donors = () => {
   const [donors, setDonors] = useState<Donor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchArea, setSearchArea] = useState('');
   const [selectedBloodGroup, setSelectedBloodGroup] = useState<string>('');
+  const [searchParams] = useSearchParams();
+  const highlightId = searchParams.get('highlight');
 
   const fetchDonors = async () => {
     setLoading(true);
@@ -42,6 +45,21 @@ export const Donors = () => {
   useEffect(() => {
     fetchDonors();
   }, [selectedBloodGroup]); // Re-fetch when blood group changes
+
+  // Scroll to highlighted donor when donors are loaded
+  useEffect(() => {
+    if (!loading && highlightId && donors.length > 0) {
+      const element = document.getElementById(`donor-${highlightId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Add highlight effect
+        element.classList.add('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50');
+        setTimeout(() => {
+          element.classList.remove('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50');
+        }, 3000);
+      }
+    }
+  }, [loading, highlightId, donors]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,9 +143,11 @@ export const Donors = () => {
           {donors.map((donor, index) => (
             <motion.div
               key={donor.id}
+              id={`donor-${donor.id}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
+              className="rounded-xl transition-all duration-300"
             >
               <DonorCard donor={donor} />
             </motion.div>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, User } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, User, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
@@ -60,6 +60,16 @@ export const BottomNav = () => {
       bgColor: 'bg-orange-50'
     },
   ];
+
+  if (session?.user?.email === '01580824066@sandwip.com') {
+    navItems.push({
+      name: 'Admin',
+      path: '/admin',
+      icon: Shield,
+      color: 'text-red-600',
+      bgColor: 'bg-red-50'
+    });
+  }
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden">

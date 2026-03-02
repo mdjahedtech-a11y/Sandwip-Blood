@@ -11,6 +11,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 interface RegisterFormInputs {
   name: string;
+  email?: string;
   password: string;
   blood_group: string;
   phone: string;
@@ -52,10 +53,25 @@ export const Register = () => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: dummyEmail,
         password: data.password,
+        options: {
+          data: {
+            email: data.email, // Store real email in metadata as well
+          }
+        }
       });
 
       if (authError) {
-        toast.error(authError.message);
+        console.error('Auth Error:', authError);
+        if (authError.message.includes('rate limit') || authError.message.includes('security purposes')) {
+          toast.error('Too many attempts. Please wait a few minutes.');
+        } else if (authError.message.includes('Email signups are disabled')) {
+          toast.error('Registration is currently disabled. Please contact the administrator.');
+        } else if (authError.message.includes('User already registered')) {
+          toast.error('Account already exists. Redirecting to login...');
+          setTimeout(() => navigate('/login'), 2000);
+        } else {
+          toast.error(authError.message);
+        }
         setLoading(false);
         return;
       }
@@ -105,6 +121,7 @@ export const Register = () => {
           {
             user_id: authData.user.id, // Link to Auth User
             name: data.name,
+            email: data.email || null, // Add email to donor record
             blood_group: data.blood_group,
             phone: data.phone,
             area: data.area,
@@ -152,6 +169,24 @@ export const Register = () => {
                 placeholder="Enter your full name"
                 {...register('name', { required: 'Name is required' })}
                 error={errors.name?.message}
+              />
+            </div>
+
+            {/* Email (Optional) */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Mail className="w-4 h-4" /> Email (Optional)
+              </label>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                {...register('email', {
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address"
+                  }
+                })}
+                error={errors.email?.message}
               />
             </div>
 

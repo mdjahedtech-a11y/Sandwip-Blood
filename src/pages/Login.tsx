@@ -17,7 +17,8 @@ export const Login = () => {
     setLoading(true);
     try {
       // Construct dummy email from phone
-      const dummyEmail = `${data.phone}@sandwip.com`;
+      const phone = data.phone.trim();
+      const dummyEmail = `${phone}@sandwip.com`;
 
       const { error } = await supabase.auth.signInWithPassword({
         email: dummyEmail,
@@ -30,7 +31,11 @@ export const Login = () => {
       navigate('/profile');
     } catch (error: any) {
       console.error('Login error:', error);
-      toast.error('Invalid phone number or password.');
+      if (error.message === 'Invalid login credentials') {
+        toast.error('Invalid phone or password. Have you registered?');
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -51,7 +56,13 @@ export const Login = () => {
             </label>
             <Input
               placeholder="01XXXXXXXXX"
-              {...register('phone', { required: 'Phone number is required' })}
+              {...register('phone', { 
+                required: 'Phone number is required',
+                pattern: {
+                  value: /^01[3-9]\d{8}$/,
+                  message: 'Invalid Bangladeshi phone number',
+                }
+              })}
               error={errors.phone?.message as string}
             />
           </div>

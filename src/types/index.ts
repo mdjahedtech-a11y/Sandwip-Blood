@@ -2,7 +2,7 @@ export interface Donor {
   id: string;
   user_id?: string; // Link to Supabase Auth User
   name: string;
-  // email removed as it's not in the DB schema
+  email?: string;
   blood_group: string;
   phone: string;
   area: string;

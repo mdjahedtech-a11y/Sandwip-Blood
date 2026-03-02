@@ -5,13 +5,13 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Trash2, CheckCircle, LogOut, Shield } from 'lucide-react';
+import { Trash2, CheckCircle, LogOut, Shield, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const Admin = () => {
   const [session, setSession] = useState<any>(null);
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [donors, setDonors] = useState<Donor[]>([]);
@@ -51,13 +51,20 @@ export const Admin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    
+    const email = `${phone.trim()}@sandwip.com`;
+    
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      toast.error(error.message);
+      if (error.message === 'Invalid login credentials') {
+        toast.error('Invalid phone or password. Is this account registered?');
+      } else {
+        toast.error(error.message);
+      }
     } else {
       toast.success('Logged in successfully');
     }
@@ -108,10 +115,10 @@ export const Admin = () => {
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="tel"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               required
             />
             <Input
@@ -125,6 +132,31 @@ export const Admin = () => {
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </form>
+        </Card>
+      </div>
+    );
+  }
+
+  // Check if the logged-in user is the admin
+  if (session.user.email !== '01580824066@sandwip.com') {
+    return (
+      <div className="max-w-md mx-auto mt-10 text-center">
+        <Card className="p-8">
+          <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Shield className="w-8 h-8 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
+          <p className="text-gray-500 mb-6">
+            You do not have permission to access the admin dashboard.
+          </p>
+          <Button onClick={handleLogout} variant="outline" className="w-full">
+            <LogOut className="w-4 h-4 mr-2" /> Logout
+          </Button>
+          <div className="mt-4">
+            <Link to="/" className="text-blue-600 hover:underline">
+              Return to Home
+            </Link>
+          </div>
         </Card>
       </div>
     );
@@ -179,10 +211,18 @@ export const Admin = () => {
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{donor.name}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{donor.blood_group}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{donor.phone}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-2">
+                      <Link
+                        to={`/donors?highlight=${donor.id}`}
+                        className="text-blue-600 hover:text-blue-900 p-2"
+                        title="View Public Profile"
+                      >
+                        <Eye className="w-5 h-5" />
+                      </Link>
                       <button
                         onClick={() => handleDeleteDonor(donor.id)}
                         className="text-red-600 hover:text-red-900 p-2"
+                        title="Delete Donor"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>

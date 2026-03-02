@@ -82,11 +82,13 @@ export const Navbar = () => {
               <Facebook className="w-5 h-5" />
             </a>
 
-            <Link to="/admin">
-              <Button variant="outline" size="sm">
-                Admin
-              </Button>
-            </Link>
+            {session?.user?.email === '01580824066@sandwip.com' && (
+              <Link to="/admin">
+                <Button variant="outline" size="sm">
+                  Admin
+                </Button>
+              </Link>
+            )}
             
             {session ? (
               <Link to="/profile">
