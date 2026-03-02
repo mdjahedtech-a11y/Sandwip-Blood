@@ -7,6 +7,7 @@ import { Requests } from '@/pages/Requests';
 import { Admin } from '@/pages/Admin';
 import { Login } from '@/pages/Login';
 import { Profile } from '@/pages/Profile';
+import { About } from '@/pages/About';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Layout>
     </Router>

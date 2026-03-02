@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, Facebook, User } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, Facebook, User, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 import { useEffect, useState } from 'react';
@@ -28,6 +28,7 @@ export const Navbar = () => {
     { name: 'Donors', path: '/donors', icon: Users },
     { name: 'Register', path: '/register', icon: PlusCircle },
     { name: 'Requests', path: '/requests', icon: AlertCircle },
+    { name: 'About', path: '/about', icon: Info },
   ];
 
   return (
@@ -82,7 +83,7 @@ export const Navbar = () => {
               <Facebook className="w-5 h-5" />
             </a>
 
-            {session?.user?.email === '01580824066@sandwip.com' && (
+            {(session?.user?.email === '01580824066@sandwip.com' || session?.user?.email === 'mdjahedtech@gmail.com') && (
               <Link to="/admin">
                 <Button variant="outline" size="sm">
                   Admin

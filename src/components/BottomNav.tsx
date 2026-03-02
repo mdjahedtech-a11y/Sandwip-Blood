@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, User, Shield } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, User, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
@@ -59,21 +59,18 @@ export const BottomNav = () => {
       color: 'text-orange-600',
       bgColor: 'bg-orange-50'
     },
+    {
+      name: 'About',
+      path: '/about',
+      icon: Info,
+      color: 'text-teal-600',
+      bgColor: 'bg-teal-50'
+    },
   ];
 
-  if (session?.user?.email === '01580824066@sandwip.com') {
-    navItems.push({
-      name: 'Admin',
-      path: '/admin',
-      icon: Shield,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50'
-    });
-  }
-
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden">
-      <nav className="bg-white/90 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl shadow-gray-200/50 flex justify-around items-center px-2 py-3 mx-auto max-w-md">
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden pb-safe">
+      <nav className="bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center px-2 py-2 w-full">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
@@ -82,13 +79,13 @@ export const BottomNav = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="relative flex flex-col items-center justify-center w-full"
+              className="relative flex flex-col items-center justify-center w-full py-2"
             >
               {isActive && (
                 <motion.div
                   layoutId="bottomNavIndicator"
                   className={cn(
-                    "absolute -top-10 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50",
+                    "absolute -top-8 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white",
                     item.bgColor
                   )}
                   initial={{ scale: 0.5, opacity: 0 }}
