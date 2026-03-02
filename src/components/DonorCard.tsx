@@ -10,7 +10,8 @@ interface DonorCardProps {
 }
 
 export const DonorCard = ({ donor }: DonorCardProps) => {
-  const isEligible = new Date(donor.next_eligible_date || '') <= new Date();
+  // If next_eligible_date is null, it means they haven't donated recently (or ever), so they are eligible.
+  const isEligible = !donor.next_eligible_date || new Date(donor.next_eligible_date) <= new Date();
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200 border-l-4 border-l-red-500">

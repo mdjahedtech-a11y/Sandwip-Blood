@@ -55,11 +55,25 @@ create policy "Anyone can create request" on public.emergency_requests for inser
 create policy "Admins can update requests" on public.emergency_requests for update using (auth.role() = 'authenticated');
 ```
 
-## 3. Storage Setup
-1. Go to **Storage** in the dashboard.
-2. Create a new bucket named `donor-photos`.
-3. Make the bucket **Public**.
-4. Add a policy to allow public uploads (or restrict as needed).
+## 3. Storage Setup (Fix for "row-level security policy" error)
+Go to the **SQL Editor** and run these commands to set up the storage bucket and policies correctly.
+
+```sql
+-- 1. Create the storage bucket (if it doesn't exist)
+insert into storage.buckets (id, name, public)
+values ('donor-photos', 'donor-photos', true)
+on conflict (id) do nothing;
+
+-- 2. Allow ANYONE to upload photos (for registration)
+create policy "Anyone can upload donor photos"
+on storage.objects for insert
+with check ( bucket_id = 'donor-photos' );
+
+-- 3. Allow ANYONE to view photos
+create policy "Anyone can view donor photos"
+on storage.objects for select
+using ( bucket_id = 'donor-photos' );
+```
 
 ## 4. Environment Variables
 1. Go to **Project Settings** -> **API**.

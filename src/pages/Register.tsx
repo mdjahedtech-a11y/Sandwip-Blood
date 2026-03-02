@@ -51,12 +51,11 @@ export const Register = () => {
         }
       }
 
-      // 2. Calculate Next Eligible Date
-      const nextEligibleDate = data.last_donation_date
-        ? calculateNextEligibleDate(data.last_donation_date)
-        : new Date().toISOString().split('T')[0]; // If never donated, eligible now (or handle logic differently)
+      // 2. Calculate Next Eligible Date (Handled by Database Generated Column)
+      // const nextEligibleDate = ... 
 
       // 3. Insert Donor Data
+      // Note: next_eligible_date is a generated column in the database, so we don't insert it.
       const { error: insertError } = await supabase
         .from('donors')
         .insert([
@@ -67,14 +66,15 @@ export const Register = () => {
             area: data.area,
             photo_url: photoUrl,
             last_donation_date: data.last_donation_date || null,
-            next_eligible_date: nextEligibleDate,
           },
         ]);
 
       if (insertError) {
+        console.error('Supabase Insert Error:', insertError);
         if (insertError.code === '23505') { // Unique violation for phone
           toast.error('This phone number is already registered.');
         } else {
+          toast.error(`Registration failed: ${insertError.message}`);
           throw insertError;
         }
       } else {
