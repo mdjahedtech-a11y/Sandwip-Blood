@@ -5,7 +5,7 @@ import { Donor, BLOOD_GROUPS } from '@/types/index';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { User, Phone, MapPin, Droplet, Calendar, Upload, Save, LogOut, Edit2, X } from 'lucide-react';
+import { User, Phone, MapPin, Droplet, Calendar, Upload, Save, LogOut, Edit2, X, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, calculateNextEligibleDate } from '@/lib/utils';
@@ -165,13 +165,26 @@ export const Profile = () => {
 
   if (loading) return <div className="text-center py-10">Loading profile...</div>;
 
+  const isAdmin = user?.email === 'mdjahedtech@gmail.com' || user?.email === '01580824066@sandwip.com';
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
         <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-        <Button variant="outline" onClick={handleLogout} size="sm">
-          <LogOut className="w-4 h-4 mr-2" /> Logout
-        </Button>
+        <div className="flex gap-2 w-full md:w-auto">
+          {isAdmin && (
+            <Button 
+              variant="default" 
+              className="flex-1 md:flex-none bg-purple-600 hover:bg-purple-700 text-white"
+              onClick={() => navigate('/admin')}
+            >
+              <Shield className="w-4 h-4 mr-2" /> Admin Panel
+            </Button>
+          )}
+          <Button variant="outline" onClick={handleLogout} size="sm" className="flex-1 md:flex-none">
+            <LogOut className="w-4 h-4 mr-2" /> Logout
+          </Button>
+        </div>
       </div>
 
       <Card className="p-6 md:p-8">
