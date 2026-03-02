@@ -19,6 +19,13 @@ export const Profile = () => {
 
   useEffect(() => {
     checkUser();
+    
+    // Safety timeout to prevent infinite loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const checkUser = async () => {
@@ -38,7 +45,11 @@ export const Profile = () => {
         .from('donors')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle(); // Use maybeSingle instead of single to handle no rows gracefully
+
+      if (error) {
+        throw error;
+      }
 
       if (data) {
         setDonor(data);
@@ -49,8 +60,12 @@ export const Profile = () => {
         setValue('area', data.area);
         setValue('last_donation_date', data.last_donation_date);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching profile:', error);
+      // If error is not "Row not found", show toast
+      if (error.code !== 'PGRST116') {
+         // toast.error('Could not load profile data');
+      }
     } finally {
       setLoading(false);
     }
@@ -86,38 +101,43 @@ export const Profile = () => {
         photoUrl = publicUrl;
       }
 
-      const updates = {
+      const baseUpdates = {
         name: data.name,
         phone: data.phone,
         blood_group: data.blood_group,
         area: data.area,
         last_donation_date: data.last_donation_date || null,
         photo_url: photoUrl,
-        user_id: user.id, // Ensure link
       };
 
       let error;
       if (donor) {
-        // Update existing
+        // Update existing - DO NOT include user_id
         const { error: updateError } = await supabase
           .from('donors')
-          .update(updates)
+          .update(baseUpdates)
           .eq('id', donor.id);
         error = updateError;
       } else {
-        // Create new if somehow missing but logged in
+        // Create new - INCLUDE user_id
         const { error: insertError } = await supabase
           .from('donors')
-          .insert([updates]);
+          .insert([{ ...baseUpdates, user_id: user.id }]);
         error = insertError;
       }
 
       if (error) throw error;
 
-      toast.success('Profile updated successfully!');
+      toast.success(donor ? 'Profile updated successfully!' : 'Profile created successfully!');
       fetchDonorProfile(user.id);
     } catch (error: any) {
       console.error('Error updating profile:', error);
+      // Handle specific schema cache errors by reloading
+      if (error.message?.includes('schema cache')) {
+        toast.error('System updated. Please refresh the page and try again.');
+        window.location.reload();
+        return;
+      }
       toast.error(error.message || 'Failed to update profile.');
     } finally {
       setSaving(false);

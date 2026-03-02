@@ -11,7 +11,6 @@ import { useNavigate, Link } from 'react-router-dom';
 
 interface RegisterFormInputs {
   name: string;
-  email: string;
   password: string;
   blood_group: string;
   phone: string;
@@ -47,9 +46,11 @@ export const Register = () => {
   const onSubmit = async (data: RegisterFormInputs) => {
     setLoading(true);
     try {
-      // 1. Sign Up User
+      // 1. Sign Up User with Dummy Email
+      const dummyEmail = `${data.phone}@sandwip.com`;
+      
       const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
+        email: dummyEmail,
         password: data.password,
       });
 
@@ -154,35 +155,6 @@ export const Register = () => {
               />
             </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                <Mail className="w-4 h-4" /> Email Address
-              </label>
-              <Input
-                type="email"
-                placeholder="you@example.com"
-                {...register('email', { required: 'Email is required' })}
-                error={errors.email?.message}
-              />
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                <Lock className="w-4 h-4" /> Password
-              </label>
-              <Input
-                type="password"
-                placeholder="Create a password"
-                {...register('password', { 
-                  required: 'Password is required',
-                  minLength: { value: 6, message: 'Must be at least 6 characters' }
-                })}
-                error={errors.password?.message}
-              />
-            </div>
-
             {/* Phone */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -199,6 +171,22 @@ export const Register = () => {
                   onBlur: (e) => checkPhoneAvailability(e.target.value),
                 })}
                 error={errors.phone?.message}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Lock className="w-4 h-4" /> Password
+              </label>
+              <Input
+                type="password"
+                placeholder="Create a password"
+                {...register('password', { 
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Must be at least 6 characters' }
+                })}
+                error={errors.password?.message}
               />
             </div>
 

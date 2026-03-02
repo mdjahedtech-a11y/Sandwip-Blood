@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { LogIn, Mail, Lock } from 'lucide-react';
+import { LogIn, Phone, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -16,8 +16,11 @@ export const Login = () => {
   const onSubmit = async (data: any) => {
     setLoading(true);
     try {
+      // Construct dummy email from phone
+      const dummyEmail = `${data.phone}@sandwip.com`;
+
       const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
+        email: dummyEmail,
         password: data.password,
       });
 
@@ -27,7 +30,7 @@ export const Login = () => {
       navigate('/profile');
     } catch (error: any) {
       console.error('Login error:', error);
-      toast.error(error.message || 'Failed to login');
+      toast.error('Invalid phone number or password.');
     } finally {
       setLoading(false);
     }
@@ -44,13 +47,12 @@ export const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Mail className="w-4 h-4" /> Email
+              <Phone className="w-4 h-4" /> Phone Number
             </label>
             <Input
-              type="email"
-              placeholder="Enter your email"
-              {...register('email', { required: 'Email is required' })}
-              error={errors.email?.message as string}
+              placeholder="01XXXXXXXXX"
+              {...register('phone', { required: 'Phone number is required' })}
+              error={errors.phone?.message as string}
             />
           </div>
 

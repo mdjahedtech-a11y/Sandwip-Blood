@@ -1,10 +1,27 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export const BottomNav = () => {
   const location = useLocation();
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const navItems = [
     { 
@@ -21,7 +38,14 @@ export const BottomNav = () => {
       color: 'text-blue-600',
       bgColor: 'bg-blue-50'
     },
-    { 
+    // Conditionally render Register or Profile based on session
+    session ? {
+      name: 'Profile',
+      path: '/profile',
+      icon: User,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50'
+    } : { 
       name: 'Register', 
       path: '/register', 
       icon: PlusCircle,
