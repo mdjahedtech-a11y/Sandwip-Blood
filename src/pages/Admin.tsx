@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Donor, EmergencyRequest } from '@/types';
+import { Donor, EmergencyRequest, Notification } from '@/types';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Trash2, CheckCircle, LogOut, Shield, Eye } from 'lucide-react';
+import { Trash2, CheckCircle, LogOut, Shield, Eye, Bell, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -16,6 +16,14 @@ export const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [donors, setDonors] = useState<Donor[]>([]);
   const [requests, setRequests] = useState<EmergencyRequest[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  
+  // Notification Form State
+  const [notifTitle, setNotifTitle] = useState('');
+  const [notifMessage, setNotifMessage] = useState('');
+  const [notifType, setNotifType] = useState<'info' | 'warning' | 'success' | 'error'>('info');
+  const [sendingNotif, setSendingNotif] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,8 +47,14 @@ export const Admin = () => {
     try {
       const { data: donorsData } = await supabase.from('donors').select('*');
       const { data: requestsData } = await supabase.from('emergency_requests').select('*');
+      const { data: notificationsData } = await supabase
+        .from('notifications')
+        .select('*')
+        .order('created_at', { ascending: false });
+
       setDonors(donorsData || []);
       setRequests(requestsData || []);
+      setNotifications(notificationsData || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -145,6 +159,52 @@ export const Admin = () => {
     }
   };
 
+  const handleCreateNotification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSendingNotif(true);
+
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert([
+          {
+            title: notifTitle,
+            message: notifMessage,
+            type: notifType,
+            is_active: true
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+
+      if (data) {
+        setNotifications([data[0], ...notifications]);
+        setNotifTitle('');
+        setNotifMessage('');
+        setNotifType('info');
+        toast.success('Notification sent successfully');
+      }
+    } catch (error: any) {
+      console.error('Error creating notification:', error);
+      toast.error(error.message || 'Failed to send notification');
+    } finally {
+      setSendingNotif(false);
+    }
+  };
+
+  const handleDeleteNotification = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this notification?')) return;
+    try {
+      const { error } = await supabase.from('notifications').delete().eq('id', id);
+      if (error) throw error;
+      setNotifications(notifications.filter((n) => n.id !== id));
+      toast.success('Notification deleted');
+    } catch (error) {
+      toast.error('Failed to delete notification');
+    }
+  };
+
   if (!session) {
     return (
       <div className="max-w-md mx-auto mt-10">
@@ -234,6 +294,98 @@ export const Admin = () => {
             {requests.filter((r) => r.status === 'completed').length}
           </p>
         </Card>
+      </div>
+
+      {/* Notification Management */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <Bell className="w-5 h-5" /> Manage Notifications
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Create Notification */}
+          <Card className="p-6 lg:col-span-1 h-fit">
+            <h3 className="text-lg font-semibold mb-4">Send New Notification</h3>
+            <form onSubmit={handleCreateNotification} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <Input
+                  value={notifTitle}
+                  onChange={(e) => setNotifTitle(e.target.value)}
+                  placeholder="Notification Title"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  rows={3}
+                  value={notifMessage}
+                  onChange={(e) => setNotifMessage(e.target.value)}
+                  placeholder="Notification Message"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <select
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  value={notifType}
+                  onChange={(e) => setNotifType(e.target.value as any)}
+                >
+                  <option value="info">Info (Blue)</option>
+                  <option value="warning">Warning (Yellow)</option>
+                  <option value="success">Success (Green)</option>
+                  <option value="error">Error (Red)</option>
+                </select>
+              </div>
+              <Button type="submit" className="w-full gap-2" disabled={sendingNotif}>
+                <Send className="w-4 h-4" />
+                {sendingNotif ? 'Sending...' : 'Send Notification'}
+              </Button>
+            </form>
+          </Card>
+
+          {/* List Notifications */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="bg-white rounded-xl shadow overflow-hidden border border-gray-200">
+              <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-700">Active Notifications</h3>
+              </div>
+              <div className="divide-y divide-gray-200 max-h-[500px] overflow-y-auto">
+                {notifications.length === 0 ? (
+                  <div className="p-8 text-center text-gray-500">
+                    No active notifications
+                  </div>
+                ) : (
+                  notifications.map((notif) => (
+                    <div key={notif.id} className="p-4 hover:bg-gray-50 transition-colors flex justify-between items-start gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge variant={notif.type === 'error' ? 'destructive' : notif.type === 'success' ? 'success' : notif.type === 'warning' ? 'warning' : 'default'}>
+                            {notif.type.toUpperCase()}
+                          </Badge>
+                          <h4 className="font-semibold text-gray-900">{notif.title}</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">{notif.message}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {new Date(notif.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleDeleteNotification(notif.id)}
+                        className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-colors"
+                        title="Delete Notification"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Donors Management */}

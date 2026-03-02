@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { NotificationBell } from './NotificationBell';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -73,6 +74,8 @@ export const Navbar = () => {
             
             <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
+            <NotificationBell />
+
             <a 
               href="https://www.facebook.com/share/17AipYKy6r/" 
               target="_blank" 
@@ -108,6 +111,7 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button - Hidden since we have Bottom Nav */}
           <div className="flex items-center md:hidden gap-2">
+            <NotificationBell />
             <a 
               href="https://www.facebook.com/share/17AipYKy6r/" 
               target="_blank" 

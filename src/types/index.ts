@@ -1,3 +1,12 @@
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'warning' | 'success' | 'error';
+  created_at: string;
+  is_active: boolean;
+}
+
 export interface Donor {
   id: string;
   user_id?: string; // Link to Supabase Auth User
