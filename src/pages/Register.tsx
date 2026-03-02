@@ -20,9 +20,28 @@ interface RegisterFormInputs {
 }
 
 export const Register = () => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<RegisterFormInputs>();
+  const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm<RegisterFormInputs>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const checkPhoneAvailability = async (phone: string) => {
+    if (!phone || phone.length < 11) return;
+    
+    const { data, error } = await supabase
+      .from('donors')
+      .select('id')
+      .eq('phone', phone)
+      .single();
+
+    if (data) {
+      setError('phone', {
+        type: 'manual',
+        message: 'This phone number is already registered.',
+      });
+    } else {
+      clearErrors('phone');
+    }
+  };
 
   const onSubmit = async (data: RegisterFormInputs) => {
     setLoading(true);
@@ -124,6 +143,7 @@ export const Register = () => {
                     value: /^01[3-9]\d{8}$/,
                     message: 'Invalid Bangladeshi phone number',
                   },
+                  onBlur: (e) => checkPhoneAvailability(e.target.value),
                 })}
                 error={errors.phone?.message}
               />

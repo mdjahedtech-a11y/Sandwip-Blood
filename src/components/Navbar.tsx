@@ -1,11 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Home, Users, PlusCircle, AlertCircle, Facebook } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -54,6 +52,19 @@ export const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            <div className="h-6 w-px bg-gray-200 mx-2"></div>
+
+            <a 
+              href="https://www.facebook.com/share/17AipYKy6r/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700 transition-colors p-2 rounded-full hover:bg-blue-50"
+              title="Join our Facebook Group"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+
             <Link to="/admin">
               <Button variant="outline" size="sm">
                 Admin
@@ -61,48 +72,22 @@ export const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none"
+          {/* Mobile Menu Button - Hidden since we have Bottom Nav */}
+          <div className="flex items-center md:hidden gap-2">
+            <a 
+              href="https://www.facebook.com/share/17AipYKy6r/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 p-2 rounded-full hover:bg-blue-50"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  'block px-3 py-2 rounded-md text-base font-medium flex items-center gap-2',
-                  location.pathname === item.path
-                    ? 'text-red-600 bg-red-50'
-                    : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'
-                )}
-              >
-                <item.icon className="w-5 h-5" />
-                {item.name}
-              </Link>
-            ))}
-            <Link
-              to="/admin"
-              onClick={() => setIsOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-red-600 hover:bg-gray-50 flex items-center gap-2"
-            >
-              Admin Panel
+              <Facebook className="w-5 h-5" />
+            </a>
+            <Link to="/admin">
+               <Button variant="ghost" size="sm">Admin</Button>
             </Link>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
