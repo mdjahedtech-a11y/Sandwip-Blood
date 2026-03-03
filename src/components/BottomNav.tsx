@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, User, Info } from 'lucide-react';
+import { Home, Users, PlusCircle, Activity, User, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
@@ -55,7 +55,7 @@ export const BottomNav = () => {
     { 
       name: 'Requests', 
       path: '/requests', 
-      icon: AlertCircle,
+      icon: Activity,
       color: 'text-orange-600',
       bgColor: 'bg-orange-50'
     },
