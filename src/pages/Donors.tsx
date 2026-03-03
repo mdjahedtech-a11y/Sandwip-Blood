@@ -53,9 +53,9 @@ export const Donors = () => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         // Add highlight effect
-        element.classList.add('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50');
+        element.classList.add('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50', 'dark:bg-red-900/20');
         setTimeout(() => {
-          element.classList.remove('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50');
+          element.classList.remove('ring-4', 'ring-red-400', 'ring-opacity-50', 'bg-red-50', 'dark:bg-red-900/20');
         }, 3000);
       }
     }
@@ -70,24 +70,24 @@ export const Donors = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Find Donors</h1>
-          <p className="text-gray-500">Search for blood donors in your area.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Find Donors</h1>
+          <p className="text-gray-500 dark:text-gray-400">Search for blood donors in your area.</p>
         </div>
-        <Button variant="outline" onClick={fetchDonors} disabled={loading} size="sm">
+        <Button variant="outline" onClick={fetchDonors} disabled={loading} size="sm" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-4">
+      <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-4 transition-colors duration-300">
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
               <Input
                 placeholder="Search by Area (e.g., Harishpur)"
-                className="pl-10 w-full"
+                className="pl-10 w-full dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
                 value={searchArea}
                 onChange={(e) => setSearchArea(e.target.value)}
               />
@@ -99,7 +99,7 @@ export const Donors = () => {
         </form>
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <span className="flex items-center text-sm font-medium text-gray-700">
+          <span className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
             <Filter className="w-4 h-4 mr-1" />
             Filter by Group:
           </span>
@@ -108,8 +108,8 @@ export const Donors = () => {
               onClick={() => setSelectedBloodGroup('')}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                 selectedBloodGroup === ''
-                  ? 'bg-gray-800 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gray-800 text-white dark:bg-gray-700'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
               }`}
             >
               All
@@ -120,8 +120,8 @@ export const Donors = () => {
                 onClick={() => setSelectedBloodGroup(bg)}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   selectedBloodGroup === bg
-                    ? 'bg-red-600 text-white'
-                    : 'bg-red-50 text-red-600 hover:bg-red-100'
+                    ? 'bg-red-600 text-white dark:bg-red-700'
+                    : 'bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30'
                 }`}
               >
                 {bg}
@@ -135,7 +135,7 @@ export const Donors = () => {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-48 bg-gray-100 rounded-xl animate-pulse"></div>
+            <div key={i} className="h-48 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse"></div>
           ))}
         </div>
       ) : donors.length > 0 ? (
@@ -154,12 +154,12 @@ export const Donors = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-          <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-gray-400" />
+        <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 transition-colors duration-300">
+          <div className="bg-gray-50 dark:bg-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-8 h-8 text-gray-400 dark:text-gray-500" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No donors found</h3>
-          <p className="text-gray-500 mt-1">Try adjusting your search or filters.</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">No donors found</h3>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filters.</p>
         </div>
       )}
     </div>

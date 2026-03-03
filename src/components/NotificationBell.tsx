@@ -64,10 +64,10 @@ export const NotificationBell = () => {
 
   const getIconColor = (type: string) => {
     switch (type) {
-      case 'warning': return 'text-yellow-500 bg-yellow-50';
-      case 'success': return 'text-green-500 bg-green-50';
-      case 'error': return 'text-red-500 bg-red-50';
-      default: return 'text-blue-500 bg-blue-50';
+      case 'warning': return 'text-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'success': return 'text-green-500 bg-green-50 dark:bg-green-900/20 dark:text-green-400';
+      case 'error': return 'text-red-500 bg-red-50 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'text-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400';
     }
   };
 
@@ -75,7 +75,7 @@ export const NotificationBell = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="relative p-2 text-gray-600 hover:text-red-600 transition-colors rounded-full hover:bg-red-50 focus:outline-none"
+        className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none"
       >
         <Bell className="w-6 h-6" />
         {unreadCount > 0 && (
@@ -92,37 +92,37 @@ export const NotificationBell = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-4 top-20 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 w-auto md:w-96 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden"
+            className="fixed inset-x-4 top-20 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 w-auto md:w-96 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden"
           >
-            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-              <h3 className="font-semibold text-gray-900">Notifications</h3>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="max-h-[400px] overflow-y-auto">
               {notifications.length === 0 ? (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-8 text-center text-gray-500 dark:text-gray-400">
                   <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
                   <p>No new notifications</p>
                 </div>
               ) : (
-                <div className="divide-y divide-gray-50">
+                <div className="divide-y divide-gray-50 dark:divide-gray-700">
                   {notifications.map((notification) => (
-                    <div key={notification.id} className="p-4 hover:bg-gray-50 transition-colors">
+                    <div key={notification.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <div className="flex gap-3">
                         <div className={`mt-1 p-2 rounded-full h-fit ${getIconColor(notification.type)}`}>
                           <Bell className="w-4 h-4" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-gray-900 mb-1">
+                          <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
                             {notification.title}
                           </h4>
-                          <p className="text-sm text-gray-600 mb-2 leading-relaxed">
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 leading-relaxed">
                             {notification.message}
                           </p>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-gray-400 dark:text-gray-500">
                             {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                           </span>
                         </div>

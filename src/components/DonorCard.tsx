@@ -14,7 +14,7 @@ export const DonorCard = ({ donor }: DonorCardProps) => {
   const isEligible = !donor.next_eligible_date || new Date(donor.next_eligible_date) <= new Date();
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200 border-l-4 border-l-red-500">
+    <Card className="hover:shadow-lg transition-shadow duration-200 border-l-4 border-l-red-500 dark:bg-gray-800 dark:border-gray-700 dark:border-l-red-500">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
@@ -22,24 +22,24 @@ export const DonorCard = ({ donor }: DonorCardProps) => {
               <img
                 src={donor.photo_url}
                 alt={donor.name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-red-100"
+                className="w-16 h-16 rounded-full object-cover border-2 border-red-100 dark:border-red-900"
               />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-xl border-2 border-red-50">
+              <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-xl border-2 border-red-50 dark:border-red-900/50">
                 {donor.name.charAt(0)}
               </div>
             )}
-            <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
+            <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-800 rounded-full p-0.5 shadow-sm">
               {isEligible ? (
-                <CheckCircle className="w-5 h-5 text-green-500 fill-white" />
+                <CheckCircle className="w-5 h-5 text-green-500 fill-white dark:fill-gray-800" />
               ) : (
-                <XCircle className="w-5 h-5 text-red-500 fill-white" />
+                <XCircle className="w-5 h-5 text-red-500 fill-white dark:fill-gray-800" />
               )}
             </div>
           </div>
           <div>
-            <h3 className="font-bold text-lg text-gray-900">{donor.name}</h3>
-            <div className="flex items-center gap-1 text-sm text-gray-500 mb-1">
+            <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">{donor.name}</h3>
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mb-1">
               <MapPin className="w-3.5 h-3.5" />
               {donor.area}
             </div>
@@ -49,23 +49,23 @@ export const DonorCard = ({ donor }: DonorCardProps) => {
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <span className="text-2xl font-black text-red-600 bg-red-50 px-2 py-1 rounded-lg">
+          <span className="text-2xl font-black text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-lg">
             {donor.blood_group}
           </span>
         </div>
       </div>
 
-      <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-2 gap-2 text-sm">
+      <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 grid grid-cols-2 gap-2 text-sm">
         <div className="flex flex-col">
-          <span className="text-gray-400 text-xs">Last Donation</span>
-          <span className="font-medium text-gray-700 flex items-center gap-1">
+          <span className="text-gray-400 dark:text-gray-500 text-xs">Last Donation</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
             <Calendar className="w-3 h-3" />
             {formatDate(donor.last_donation_date)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-gray-400 text-xs">Next Eligible</span>
-          <span className="font-medium text-gray-700 flex items-center gap-1">
+          <span className="text-gray-400 dark:text-gray-500 text-xs">Next Eligible</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
             <Calendar className="w-3 h-3" />
             {formatDate(donor.next_eligible_date)}
           </span>
@@ -74,7 +74,7 @@ export const DonorCard = ({ donor }: DonorCardProps) => {
 
       <div className="mt-4">
         <a href={`tel:${donor.phone}`} className="w-full block">
-          <Button className="w-full gap-2" size="sm">
+          <Button className="w-full gap-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600" size="sm">
             <Phone className="w-4 h-4" />
             Call Now
           </Button>

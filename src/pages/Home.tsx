@@ -30,7 +30,7 @@ export const Home = () => {
   return (
     <div className="space-y-8">
       {/* Hero Slider Section */}
-      <section className="rounded-2xl overflow-hidden shadow-lg relative">
+      <section className="rounded-2xl overflow-hidden shadow-lg dark:shadow-gray-800 relative">
         <Swiper
           spaceBetween={0}
           centeredSlides={true}
@@ -66,29 +66,29 @@ export const Home = () => {
       </section>
 
       {/* Hero Text Section */}
-      <section className="text-center py-6 px-4 bg-gradient-to-br from-red-50 to-white rounded-2xl border border-red-100 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-red-100 rounded-full opacity-50 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-32 h-32 bg-red-100 rounded-full opacity-50 blur-3xl"></div>
+      <section className="text-center py-6 px-4 bg-gradient-to-br from-red-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-red-100 dark:border-gray-700 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-red-100 dark:bg-red-900/20 rounded-full opacity-50 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-32 h-32 bg-red-100 dark:bg-red-900/20 rounded-full opacity-50 blur-3xl"></div>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
-            Donate Blood, <span className="text-red-600">Save Life</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
+            Donate Blood, <span className="text-red-600 dark:text-red-500">Save Life</span>
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-6 leading-relaxed">
             Your donation can be the reason for someone's heartbeat. Join the Sandwip Blood Donor community today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Link to="/register">
-              <Button size="default" className="w-full sm:w-auto shadow-red-200 shadow-md text-sm sm:text-base">
+              <Button size="default" className="w-full sm:w-auto shadow-red-200 dark:shadow-none shadow-md text-sm sm:text-base">
                 Register as Donor
               </Button>
             </Link>
             <Link to="/donors">
-              <Button variant="secondary" size="default" className="w-full sm:w-auto text-sm sm:text-base">
+              <Button variant="secondary" size="default" className="w-full sm:w-auto text-sm sm:text-base dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
                 <Search className="w-4 h-4 mr-2" />
                 Find Donors
               </Button>
@@ -99,43 +99,43 @@ export const Home = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-5">
-        <Card className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <div className="p-2 bg-red-100 rounded-full text-red-600 shrink-0">
+        <Card className="p-4 flex items-center gap-3 hover:shadow-md dark:hover:shadow-gray-800 transition-shadow dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-full text-red-600 dark:text-red-400 shrink-0">
             <Users className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Active Donors</p>
-            <h3 className="text-lg md:text-xl font-bold text-gray-900">1,200+</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Active Donors</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">1,200+</h3>
           </div>
         </Card>
-        <Card className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <div className="p-2 bg-green-100 rounded-full text-green-600 shrink-0">
+        <Card className="p-4 flex items-center gap-3 hover:shadow-md dark:hover:shadow-gray-800 transition-shadow dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400 shrink-0">
             <Heart className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Lives Saved</p>
-            <h3 className="text-lg md:text-xl font-bold text-gray-900">3,500+</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Lives Saved</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">3,500+</h3>
           </div>
         </Card>
-        <Card className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <div className="p-2 bg-blue-100 rounded-full text-blue-600 shrink-0">
+        <Card className="p-4 flex items-center gap-3 hover:shadow-md dark:hover:shadow-gray-800 transition-shadow dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400 shrink-0">
             <Activity className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Requests Fulfilled</p>
-            <h3 className="text-lg md:text-xl font-bold text-gray-900">98%</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Requests Fulfilled</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">98%</h3>
           </div>
         </Card>
       </div>
 
       {/* Emergency CTA */}
-      <section className="bg-red-600 rounded-xl p-6 text-white shadow-lg shadow-red-200 flex flex-col md:flex-row items-center justify-between gap-4">
+      <section className="bg-red-600 dark:bg-red-700 rounded-xl p-6 text-white shadow-lg shadow-red-200 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-4 transition-colors duration-300">
         <div>
           <h2 className="text-xl md:text-2xl font-bold mb-1">Need Blood Urgently?</h2>
           <p className="text-red-100 text-sm md:text-base">Post an emergency request and notify nearby donors instantly.</p>
         </div>
         <Link to="/requests" className="w-full md:w-auto">
-          <Button variant="secondary" size="default" className="w-full whitespace-nowrap">
+          <Button variant="secondary" size="default" className="w-full whitespace-nowrap dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
             Post Request
           </Button>
         </Link>

@@ -153,28 +153,29 @@ export const Register = () => {
   return (
     <div className="max-w-2xl mx-auto mt-10">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Become a Donor</h1>
-        <p className="text-gray-600 mt-2">Join our community and save lives.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Become a Donor</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Join our community and save lives.</p>
       </div>
 
-      <Card className="p-6 md:p-8">
+      <Card className="p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Name */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <User className="w-4 h-4" /> Full Name
               </label>
               <Input
                 placeholder="Enter your full name"
                 {...register('name', { required: 'Name is required' })}
                 error={errors.name?.message}
+                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             {/* Email (Optional) */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Mail className="w-4 h-4" /> Email (Optional)
               </label>
               <Input
@@ -187,12 +188,13 @@ export const Register = () => {
                   }
                 })}
                 error={errors.email?.message}
+                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             {/* Phone */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Phone className="w-4 h-4" /> Phone Number
               </label>
               <Input
@@ -206,12 +208,13 @@ export const Register = () => {
                   onBlur: (e) => checkPhoneAvailability(e.target.value),
                 })}
                 error={errors.phone?.message}
+                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Lock className="w-4 h-4" /> Password
               </label>
               <Input
@@ -222,21 +225,22 @@ export const Register = () => {
                   minLength: { value: 6, message: 'Must be at least 6 characters' }
                 })}
                 error={errors.password?.message}
+                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             {/* Blood Group */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Droplet className="w-4 h-4" /> Blood Group
               </label>
               <select
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-800 dark:text-white"
                 {...register('blood_group', { required: 'Blood group is required' })}
               >
-                <option value="">Select Blood Group</option>
+                <option value="" className="dark:bg-gray-800">Select Blood Group</option>
                 {BLOOD_GROUPS.map((bg) => (
-                  <option key={bg} value={bg}>
+                  <option key={bg} value={bg} className="dark:bg-gray-800">
                     {bg}
                   </option>
                 ))}
@@ -248,54 +252,56 @@ export const Register = () => {
 
             {/* Area */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <MapPin className="w-4 h-4" /> Area / Address
               </label>
               <Input
                 placeholder="e.g. Harishpur, Sandwip"
                 {...register('area', { required: 'Area is required' })}
                 error={errors.area?.message}
+                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             {/* Last Donation Date */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Calendar className="w-4 h-4" /> Last Donation Date
               </label>
               <Input
                 type="date"
                 {...register('last_donation_date')}
-                className="w-full"
+                className="w-full dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               />
-              <p className="text-xs text-gray-500">Leave empty if you haven't donated yet.</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Leave empty if you haven't donated yet.</p>
             </div>
 
             {/* Photo Upload */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <Upload className="w-4 h-4" /> Profile Photo
               </label>
               <input
                 type="file"
                 accept="image/*"
-                className="block w-full text-sm text-gray-500
+                className="block w-full text-sm text-gray-500 dark:text-gray-400
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-full file:border-0
                   file:text-sm file:font-semibold
                   file:bg-red-50 file:text-red-700
-                  hover:file:bg-red-100"
+                  dark:file:bg-red-900/30 dark:file:text-red-400
+                  hover:file:bg-red-100 dark:hover:file:bg-red-900/50"
                 {...register('photo')}
               />
               <div className="flex flex-col gap-1 mt-1">
-                <p className="text-xs text-gray-500">Max size: 400KB.</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">Max size: 400KB.</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Image too large?{' '}
                   <a 
                     href="https://compressjpeg.com/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-blue-600 hover:underline font-medium dark:text-blue-400"
                   >
                     Compress it here
                   </a>
@@ -307,7 +313,7 @@ export const Register = () => {
           <div className="pt-4">
             <Button
               type="submit"
-              className="w-full md:w-auto md:px-8"
+              className="w-full md:w-auto md:px-8 dark:bg-red-700 dark:hover:bg-red-600 dark:text-white"
               disabled={loading}
               size="lg"
             >
@@ -317,9 +323,9 @@ export const Register = () => {
           </div>
           
           <div className="text-center mt-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Already have an account?{' '}
-              <Link to="/login" className="text-red-600 hover:underline font-medium">
+              <Link to="/login" className="text-red-600 dark:text-red-400 hover:underline font-medium">
                 Login here
               </Link>
             </p>

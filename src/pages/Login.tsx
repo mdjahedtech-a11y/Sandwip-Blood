@@ -48,14 +48,14 @@ export const Login = () => {
   return (
     <div className="max-w-md mx-auto mt-10">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-        <p className="text-gray-600 mt-2">Login to manage your donor profile.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Welcome Back</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Login to manage your donor profile.</p>
       </div>
 
-      <Card className="p-8">
+      <Card className="p-8 dark:bg-gray-800 dark:border-gray-700">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <User className="w-4 h-4" /> Email or Phone Number
             </label>
             <Input
@@ -72,11 +72,12 @@ export const Login = () => {
                 }
               })}
               error={errors.identifier?.message as string}
+              className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Lock className="w-4 h-4" /> Password
             </label>
             <Input
@@ -84,17 +85,18 @@ export const Login = () => {
               placeholder="Enter your password"
               {...register('password', { required: 'Password is required' })}
               error={errors.password?.message as string}
+              className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full dark:bg-red-700 dark:hover:bg-red-600 dark:text-white" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
             <LogIn className="w-4 h-4 ml-2" />
           </Button>
 
-          <div className="text-center text-sm text-gray-600">
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
-            <Link to="/register" className="text-red-600 hover:underline font-medium">
+            <Link to="/register" className="text-red-600 dark:text-red-400 hover:underline font-medium">
               Register as Donor
             </Link>
           </div>

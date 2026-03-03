@@ -5,6 +5,7 @@ import { Button } from './ui/Button';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { NotificationBell } from './NotificationBell';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -48,7 +49,7 @@ export const Navbar = () => {
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
               </div>
-              <span className="font-bold text-xl text-gray-900">
+              <span className="font-bold text-xl text-gray-900 dark:text-white">
                 Sandwip<span className="text-red-600">Blood</span>
               </span>
             </Link>
@@ -63,8 +64,8 @@ export const Navbar = () => {
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2',
                   location.pathname === item.path
-                    ? 'text-red-600 bg-red-50'
-                    : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'
+                    ? 'text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                 )}
               >
                 <item.icon className="w-4 h-4" />
@@ -72,7 +73,9 @@ export const Navbar = () => {
               </Link>
             ))}
             
-            <div className="h-6 w-px bg-gray-200 mx-2"></div>
+            <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+            <ThemeToggle />
 
             <NotificationBell />
 
@@ -80,7 +83,7 @@ export const Navbar = () => {
               href="https://www.facebook.com/share/17AipYKy6r/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700 transition-colors p-2 rounded-full hover:bg-blue-50"
+              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20"
               title="Join our Facebook Group"
             >
               <Facebook className="w-5 h-5" />
@@ -111,12 +114,13 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button - Hidden since we have Bottom Nav */}
           <div className="flex items-center md:hidden gap-2">
+            <ThemeToggle />
             <NotificationBell />
             <a 
               href="https://www.facebook.com/share/17AipYKy6r/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 p-2 rounded-full hover:bg-blue-50"
+              className="text-blue-600 dark:text-blue-400 p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20"
             >
               <Facebook className="w-5 h-5" />
             </a>

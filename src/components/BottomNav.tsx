@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, Activity, User, Info } from 'lucide-react';
+import { Home, Users, PlusCircle, Megaphone, User, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
@@ -28,49 +28,49 @@ export const BottomNav = () => {
       name: 'Home', 
       path: '/', 
       icon: Home,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50'
+      color: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-red-50 dark:bg-red-900/20'
     },
     { 
       name: 'Donors', 
       path: '/donors', 
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20'
     },
     // Conditionally render Register or Profile based on session
     session ? {
       name: 'Profile',
       path: '/profile',
       icon: User,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50'
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-50 dark:bg-purple-900/20'
     } : { 
       name: 'Register', 
       path: '/register', 
       icon: PlusCircle,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50'
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-900/20'
     },
     { 
       name: 'Requests', 
       path: '/requests', 
-      icon: Activity,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50'
+      icon: Megaphone,
+      color: 'text-orange-600 dark:text-orange-400',
+      bgColor: 'bg-orange-50 dark:bg-orange-900/20'
     },
     {
       name: 'About',
       path: '/about',
       icon: Info,
-      color: 'text-teal-600',
-      bgColor: 'bg-teal-50'
+      color: 'text-teal-600 dark:text-teal-400',
+      bgColor: 'bg-teal-50 dark:bg-teal-900/20'
     },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden pb-safe">
-      <nav className="bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center px-2 py-2 w-full">
+      <nav className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center px-2 py-2 w-full transition-colors duration-300">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
@@ -85,7 +85,7 @@ export const BottomNav = () => {
                 <motion.div
                   layoutId="bottomNavIndicator"
                   className={cn(
-                    "absolute -top-8 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white",
+                    "absolute -top-8 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-900",
                     item.bgColor
                   )}
                   initial={{ scale: 0.5, opacity: 0 }}
@@ -100,7 +100,7 @@ export const BottomNav = () => {
                 "flex flex-col items-center transition-all duration-300",
                 isActive ? "opacity-0 translate-y-4" : "opacity-100"
               )}>
-                <Icon className={cn("w-6 h-6 mb-1 text-gray-400 group-hover:text-gray-600")} />
+                <Icon className={cn("w-6 h-6 mb-1 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300")} />
               </div>
               
               {isActive && (

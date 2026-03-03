@@ -72,13 +72,13 @@ export const Requests = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <AlertTriangle className="text-red-600 w-8 h-8" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <AlertTriangle className="text-red-600 dark:text-red-500 w-8 h-8" />
             Emergency Requests
           </h1>
-          <p className="text-gray-500">Urgent blood needs in your area.</p>
+          <p className="text-gray-500 dark:text-gray-400">Urgent blood needs in your area.</p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)} className="gap-2">
+        <Button onClick={() => setShowForm(!showForm)} className="gap-2 dark:bg-red-700 dark:text-white dark:hover:bg-red-600">
           {showForm ? 'Cancel Request' : 'Post New Request'}
           {!showForm && <Plus className="w-4 h-4" />}
         </Button>
@@ -92,22 +92,23 @@ export const Requests = () => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <Card className="p-6 border-l-4 border-l-red-600 bg-red-50">
-              <h3 className="text-lg font-bold text-red-800 mb-4">Create Emergency Request</h3>
+            <Card className="p-6 border-l-4 border-l-red-600 bg-red-50 dark:bg-red-900/10 dark:border-l-red-500">
+              <h3 className="text-lg font-bold text-red-800 dark:text-red-400 mb-4">Create Emergency Request</h3>
               <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   placeholder="Patient Name"
                   {...register('patient_name', { required: 'Required' })}
                   error={errors.patient_name?.message}
+                  className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
                 />
                 <div className="space-y-1">
                   <select
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg dark:bg-gray-800 dark:text-white"
                     {...register('blood_group', { required: 'Required' })}
                   >
-                    <option value="">Select Blood Group</option>
+                    <option value="" className="dark:bg-gray-800">Select Blood Group</option>
                     {BLOOD_GROUPS.map((bg) => (
-                      <option key={bg} value={bg}>{bg}</option>
+                      <option key={bg} value={bg} className="dark:bg-gray-800">{bg}</option>
                     ))}
                   </select>
                   {errors.blood_group && <p className="text-red-500 text-sm">Required</p>}
@@ -116,20 +117,23 @@ export const Requests = () => {
                   placeholder="Hospital Name"
                   {...register('hospital', { required: 'Required' })}
                   error={errors.hospital?.message}
+                  className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
                 />
                 <Input
                   placeholder="Contact Number"
                   {...register('contact_number', { required: 'Required' })}
                   error={errors.contact_number?.message}
+                  className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
                 />
                 <Input
                   type="date"
                   label="Required Date"
                   {...register('required_date', { required: 'Required' })}
                   error={errors.required_date?.message}
+                  className="dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                 />
                 <div className="md:col-span-2 flex justify-end">
-                  <Button type="submit" variant="primary">Post Request</Button>
+                  <Button type="submit" variant="primary" className="dark:bg-red-700 dark:hover:bg-red-600">Post Request</Button>
                 </div>
               </form>
             </Card>
@@ -139,41 +143,41 @@ export const Requests = () => {
 
       <div className="grid gap-4">
         {loading ? (
-          <div className="text-center py-8">Loading requests...</div>
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">Loading requests...</div>
         ) : requests.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-            <p className="text-gray-500">No active emergency requests.</p>
+          <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 transition-colors duration-300">
+            <p className="text-gray-500 dark:text-gray-400">No active emergency requests.</p>
           </div>
         ) : (
           requests.map((req) => (
-            <Card key={req.id} className="border-l-4 border-l-red-500 hover:shadow-md transition-shadow">
+            <Card key={req.id} className="border-l-4 border-l-red-500 hover:shadow-md transition-shadow dark:bg-gray-800 dark:border-gray-700 dark:border-l-red-500">
               <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant={req.status === 'completed' ? 'success' : 'danger'}>
                       {req.status === 'completed' ? 'Fulfilled' : 'Urgent'}
                     </Badge>
-                    <span className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
+                    <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                       <Clock className="w-3 h-3" /> Posted: {formatDate(req.created_at)}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900">{req.patient_name}</h3>
-                  <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-gray-600">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">{req.patient_name}</h3>
+                  <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-gray-600 dark:text-gray-300">
                     <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4 text-red-500 shrink-0" /> {req.hospital}
+                      <MapPin className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" /> {req.hospital}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-red-500 shrink-0" /> Required: {formatDate(req.required_date)}
+                      <Calendar className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" /> Required: {formatDate(req.required_date)}
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 border-t sm:border-t-0 pt-3 sm:pt-0 mt-2 sm:mt-0">
-                  <span className="text-2xl sm:text-3xl font-black text-red-600 bg-red-50 px-3 py-1 rounded-xl">
+                <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 border-t sm:border-t-0 border-gray-100 dark:border-gray-700 pt-3 sm:pt-0 mt-2 sm:mt-0">
+                  <span className="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-1 rounded-xl">
                     {req.blood_group}
                   </span>
                   <a href={`tel:${req.contact_number}`} className="w-full sm:w-auto">
-                    <Button size="sm" className="gap-2 w-full sm:w-auto">
+                    <Button size="sm" className="gap-2 w-full sm:w-auto dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                       <Phone className="w-4 h-4" /> <span className="sm:hidden">Call</span> <span className="hidden sm:inline">Call Contact</span>
                     </Button>
                   </a>
