@@ -8,6 +8,7 @@ import { Search, Filter, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import toast from 'react-hot-toast';
 import { useSearchParams } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Donors = () => {
   const [donors, setDonors] = useState<Donor[]>([]);
@@ -16,6 +17,7 @@ export const Donors = () => {
   const [selectedBloodGroup, setSelectedBloodGroup] = useState<string>('');
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get('highlight');
+  const { t } = useLanguage();
 
   const fetchDonors = async () => {
     setLoading(true);
@@ -36,7 +38,7 @@ export const Donors = () => {
       setDonors(data || []);
     } catch (error) {
       console.error('Error fetching donors:', error);
-      toast.error('Failed to load donors. Please try again.');
+      toast.error(t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -70,8 +72,8 @@ export const Donors = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Find Donors</h1>
-          <p className="text-gray-500 dark:text-gray-400">Search for blood donors in your area.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('donors.title')}</h1>
+          <p className="text-gray-500 dark:text-gray-400">{t('donors.subtitle')}</p>
         </div>
         <Button variant="outline" onClick={fetchDonors} disabled={loading} size="sm" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
@@ -86,7 +88,7 @@ export const Donors = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
               <Input
-                placeholder="Search by Area (e.g., Harishpur)"
+                placeholder={t('donors.searchPlaceholder')}
                 className="pl-10 w-full dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
                 value={searchArea}
                 onChange={(e) => setSearchArea(e.target.value)}
@@ -101,7 +103,7 @@ export const Donors = () => {
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <span className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
             <Filter className="w-4 h-4 mr-1" />
-            Filter by Group:
+            {t('donors.bloodGroup')}:
           </span>
           <div className="flex flex-wrap gap-2">
             <button
@@ -112,7 +114,7 @@ export const Donors = () => {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
               }`}
             >
-              All
+              {t('donors.allGroups')}
             </button>
             {BLOOD_GROUPS.map((bg) => (
               <button

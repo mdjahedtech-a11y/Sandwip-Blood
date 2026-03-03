@@ -1,15 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, PlusCircle, AlertCircle, Facebook, User, Info } from 'lucide-react';
+import { Home, Users, PlusCircle, AlertCircle, Facebook, User, Info, Trophy, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { NotificationBell } from './NotificationBell';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageToggle } from './LanguageToggle';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Navbar = () => {
   const location = useLocation();
   const [session, setSession] = useState<any>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -26,11 +29,13 @@ export const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', path: '/', icon: Home },
-    { name: 'Donors', path: '/donors', icon: Users },
-    { name: 'Register', path: '/register', icon: PlusCircle },
-    { name: 'Requests', path: '/requests', icon: AlertCircle },
-    { name: 'About', path: '/about', icon: Info },
+    { name: t('nav.home'), path: '/', icon: Home },
+    { name: t('nav.donors'), path: '/donors', icon: Users },
+    { name: t('nav.register'), path: '/register', icon: PlusCircle },
+    { name: t('nav.requests'), path: '/requests', icon: AlertCircle },
+    { name: t('nav.about'), path: '/about', icon: Info },
+    { name: t('nav.heroes'), path: '/leaderboard', icon: Trophy },
+    { name: t('nav.certificate'), path: '/certificate', icon: Award },
   ];
 
   return (
@@ -75,6 +80,7 @@ export const Navbar = () => {
             
             <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
 
+            <LanguageToggle />
             <ThemeToggle />
 
             <NotificationBell />
@@ -92,7 +98,7 @@ export const Navbar = () => {
             {(session?.user?.email === '01580824066@sandwip.com' || session?.user?.email === 'mdjahedtech@gmail.com') && (
               <Link to="/admin">
                 <Button variant="outline" size="sm">
-                  Admin
+                  {t('nav.admin')}
                 </Button>
               </Link>
             )}
@@ -100,13 +106,13 @@ export const Navbar = () => {
             {session ? (
               <Link to="/profile">
                 <Button variant="default" size="sm" className="gap-2">
-                  <User className="w-4 h-4" /> Profile
+                  <User className="w-4 h-4" /> {t('nav.profile')}
                 </Button>
               </Link>
             ) : (
               <Link to="/login">
                 <Button variant="default" size="sm">
-                  Login
+                  {t('nav.login')}
                 </Button>
               </Link>
             )}
@@ -114,6 +120,7 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button - Hidden since we have Bottom Nav */}
           <div className="flex items-center md:hidden gap-2">
+            <LanguageToggle />
             <ThemeToggle />
             <NotificationBell />
             <a 
@@ -130,7 +137,7 @@ export const Navbar = () => {
               </Link>
             ) : (
               <Link to="/login">
-                 <Button variant="ghost" size="sm">Login</Button>
+                 <Button variant="ghost" size="sm">{t('nav.login')}</Button>
               </Link>
             )}
           </div>

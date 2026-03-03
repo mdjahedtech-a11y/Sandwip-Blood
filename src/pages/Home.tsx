@@ -5,6 +5,7 @@ import { Users, Heart, Activity, Search } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -12,18 +13,20 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 export const Home = () => {
+  const { t } = useLanguage();
+
   const sliderImages = [
     {
       url: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=2883&auto=format&fit=crop",
-      caption: "Every drop counts. Be a hero."
+      caption: t('home.heroTitle')
     },
     {
       url: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2940&auto=format&fit=crop",
-      caption: "Your blood can save a life today."
+      caption: t('home.heroSubtitle')
     },
     {
       url: "https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=2836&auto=format&fit=crop",
-      caption: "Join our community of lifesavers."
+      caption: t('home.cta.desc')
     }
   ];
 
@@ -76,21 +79,21 @@ export const Home = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
-            Donate Blood, <span className="text-red-600 dark:text-red-500">Save Life</span>
+            {t('home.heroTitle')}
           </h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-6 leading-relaxed">
-            Your donation can be the reason for someone's heartbeat. Join the Sandwip Blood Donor community today.
+            {t('home.heroSubtitle')}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Link to="/register">
               <Button size="default" className="w-full sm:w-auto shadow-red-200 dark:shadow-none shadow-md text-sm sm:text-base">
-                Register as Donor
+                {t('home.beDonor')}
               </Button>
             </Link>
             <Link to="/donors">
               <Button variant="secondary" size="default" className="w-full sm:w-auto text-sm sm:text-base dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
                 <Search className="w-4 h-4 mr-2" />
-                Find Donors
+                {t('home.findDonor')}
               </Button>
             </Link>
           </div>
@@ -104,7 +107,7 @@ export const Home = () => {
             <Users className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Active Donors</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('home.stats.donors')}</p>
             <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">1,200+</h3>
           </div>
         </Card>
@@ -113,7 +116,7 @@ export const Home = () => {
             <Heart className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Lives Saved</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('home.stats.lives')}</p>
             <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">3,500+</h3>
           </div>
         </Card>
@@ -122,8 +125,8 @@ export const Home = () => {
             <Activity className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Requests Fulfilled</p>
-            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">98%</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('home.stats.districts')}</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">15+</h3>
           </div>
         </Card>
       </div>
@@ -131,12 +134,12 @@ export const Home = () => {
       {/* Emergency CTA */}
       <section className="bg-red-600 dark:bg-red-700 rounded-xl p-6 text-white shadow-lg shadow-red-200 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-4 transition-colors duration-300">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold mb-1">Need Blood Urgently?</h2>
-          <p className="text-red-100 text-sm md:text-base">Post an emergency request and notify nearby donors instantly.</p>
+          <h2 className="text-xl md:text-2xl font-bold mb-1">{t('home.features.emergency.title')}</h2>
+          <p className="text-red-100 text-sm md:text-base">{t('home.features.emergency.desc')}</p>
         </div>
         <Link to="/requests" className="w-full md:w-auto">
           <Button variant="secondary" size="default" className="w-full whitespace-nowrap dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
-            Post Request
+            {t('nav.requests')}
           </Button>
         </Link>
       </section>
