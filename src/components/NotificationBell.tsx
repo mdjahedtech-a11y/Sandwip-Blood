@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Bell, X } from 'lucide-react';
+import { Bell, X, ExternalLink } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Notification } from '@/types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -110,15 +110,27 @@ export const NotificationBell = () => {
               ) : (
                 <div className="divide-y divide-gray-50 dark:divide-gray-700">
                   {notifications.map((notification) => (
-                    <div key={notification.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                    <div key={notification.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors relative group">
+                      {notification.link && (
+                        <a 
+                          href={notification.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="absolute inset-0 z-10"
+                          title="Open Link"
+                        />
+                      )}
                       <div className="flex gap-3">
                         <div className={`mt-1 p-2 rounded-full h-fit ${getIconColor(notification.type)}`}>
                           <Bell className="w-4 h-4" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                            {notification.title}
-                          </h4>
+                          <div className="flex justify-between items-start">
+                            <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                              {notification.title}
+                            </h4>
+                            {notification.link && <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />}
+                          </div>
                           <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 leading-relaxed">
                             {notification.message}
                           </p>

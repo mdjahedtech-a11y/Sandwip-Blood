@@ -21,6 +21,7 @@ export const Admin = () => {
   // Notification Form State
   const [notifTitle, setNotifTitle] = useState('');
   const [notifMessage, setNotifMessage] = useState('');
+  const [notifLink, setNotifLink] = useState('');
   const [notifType, setNotifType] = useState<'info' | 'warning' | 'success' | 'error'>('info');
   const [sendingNotif, setSendingNotif] = useState(false);
 
@@ -170,6 +171,7 @@ export const Admin = () => {
           {
             title: notifTitle,
             message: notifMessage,
+            link: notifLink || null,
             type: notifType,
             is_active: true
           }
@@ -182,6 +184,7 @@ export const Admin = () => {
         setNotifications([data[0], ...notifications]);
         setNotifTitle('');
         setNotifMessage('');
+        setNotifLink('');
         setNotifType('info');
         toast.success('Notification sent successfully');
       }
@@ -330,6 +333,15 @@ export const Admin = () => {
                 />
               </div>
               <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Link (Optional)</label>
+                <Input
+                  value={notifLink}
+                  onChange={(e) => setNotifLink(e.target.value)}
+                  placeholder="https://example.com"
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
                 <select
                   className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white"
@@ -371,6 +383,11 @@ export const Admin = () => {
                           <h4 className="font-semibold text-gray-900 dark:text-gray-100">{notif.title}</h4>
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-300">{notif.message}</p>
+                        {notif.link && (
+                          <a href={notif.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1 block truncate max-w-xs">
+                            {notif.link}
+                          </a>
+                        )}
                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                           {new Date(notif.created_at).toLocaleString()}
                         </p>

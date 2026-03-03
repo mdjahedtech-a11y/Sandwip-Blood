@@ -2,6 +2,7 @@ export interface Notification {
   id: string;
   title: string;
   message: string;
+  link?: string;
   type: 'info' | 'warning' | 'success' | 'error';
   created_at: string;
   is_active: boolean;
