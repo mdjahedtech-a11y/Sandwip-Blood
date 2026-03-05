@@ -8,7 +8,6 @@ import { Admin } from '@/pages/Admin';
 import { Login } from '@/pages/Login';
 import { Profile } from '@/pages/Profile';
 import { About } from '@/pages/About';
-import { Leaderboard } from '@/pages/Leaderboard';
 import { Certificate } from '@/pages/Certificate';
 
 export default function App() {
@@ -24,7 +23,6 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/certificate" element={<Certificate />} />
         </Routes>
       </Layout>

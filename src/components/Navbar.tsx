@@ -34,7 +34,6 @@ export const Navbar = () => {
     { name: t('nav.register'), path: '/register', icon: PlusCircle },
     { name: t('nav.requests'), path: '/requests', icon: AlertCircle },
     { name: t('nav.about'), path: '/about', icon: Info },
-    { name: t('nav.heroes'), path: '/leaderboard', icon: Trophy },
     { name: t('nav.certificate'), path: '/certificate', icon: Award },
   ];
 
@@ -131,15 +130,6 @@ export const Navbar = () => {
             >
               <Facebook className="w-5 h-5" />
             </a>
-            {session ? (
-              <Link to="/profile">
-                 <Button variant="ghost" size="sm"><User className="w-5 h-5" /></Button>
-              </Link>
-            ) : (
-              <Link to="/login">
-                 <Button variant="ghost" size="sm">{t('nav.login')}</Button>
-              </Link>
-            )}
           </div>
         </div>
       </div>

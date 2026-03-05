@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { formatDate } from '@/lib/utils';
-import { AlertTriangle, Phone, MapPin, Calendar, Clock, Plus, Share2 } from 'lucide-react';
+import { AlertTriangle, Phone, MapPin, Calendar, Clock, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -67,26 +67,6 @@ export const Requests = () => {
     } catch (error) {
       console.error('Error posting request:', error);
       toast.error(t('common.error'));
-    }
-  };
-
-  const handleShare = async (req: EmergencyRequest) => {
-    const shareData = {
-      title: `URGENT: ${req.blood_group} Blood Needed`,
-      text: `Urgent Blood Request!\nPatient: ${req.patient_name}\nGroup: ${req.blood_group}\nHospital: ${req.hospital}\nContact: ${req.contact_number}\nDate: ${formatDate(req.required_date)}`,
-      url: window.location.href,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        toast.success('Shared successfully');
-      } catch (err) {
-        console.error('Error sharing:', err);
-      }
-    } else {
-      navigator.clipboard.writeText(`${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`);
-      toast.success('Copied to clipboard');
     }
   };
 
@@ -199,14 +179,6 @@ export const Requests = () => {
                     {req.blood_group}
                   </span>
                   <div className="flex gap-2 w-full sm:w-auto">
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      className="gap-2 flex-1 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-                      onClick={() => handleShare(req)}
-                    >
-                      <Share2 className="w-4 h-4" /> {t('requests.card.share')}
-                    </Button>
                     <a href={`tel:${req.contact_number}`} className="flex-1 sm:flex-none">
                       <Button size="sm" className="gap-2 w-full dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                         <Phone className="w-4 h-4" /> {t('requests.card.call')}
