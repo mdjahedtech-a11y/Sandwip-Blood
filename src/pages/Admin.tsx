@@ -134,6 +134,35 @@ export const Admin = () => {
     toast.success('Logged out');
   };
 
+  const handleApproveDonor = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('donors')
+        .update({ status: 'approved' })
+        .eq('id', id);
+      if (error) throw error;
+      setDonors(donors.map((d) => (d.id === id ? { ...d, status: 'approved' } : d)));
+      toast.success('Donor approved');
+    } catch (error) {
+      toast.error('Failed to approve donor');
+    }
+  };
+
+  const handleRejectDonor = async (id: string) => {
+    if (!window.confirm('Are you sure you want to reject this donor?')) return;
+    try {
+      const { error } = await supabase
+        .from('donors')
+        .update({ status: 'rejected' })
+        .eq('id', id);
+      if (error) throw error;
+      setDonors(donors.map((d) => (d.id === id ? { ...d, status: 'rejected' } : d)));
+      toast.success('Donor rejected');
+    } catch (error) {
+      toast.error('Failed to reject donor');
+    }
+  };
+
   const handleDeleteDonor = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this donor?')) return;
     try {
@@ -411,6 +440,53 @@ export const Admin = () => {
       {/* Donors Management */}
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Manage Donors</h2>
+        
+        {/* Pending Donors Section */}
+        {donors.some(d => d.status === 'pending') && (
+          <div className="bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 mb-6">
+            <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-400 mb-3 flex items-center gap-2">
+              <Shield className="w-5 h-5" /> Pending Approvals
+            </h3>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Group</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Phone</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {donors.filter(d => d.status === 'pending').map((donor) => (
+                      <tr key={donor.id}>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{donor.name}</td>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{donor.blood_group}</td>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{donor.phone}</td>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                          <button
+                            onClick={() => handleApproveDonor(donor.id)}
+                            className="bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 px-3 py-1 rounded-md text-xs font-medium transition-colors"
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => handleRejectDonor(donor.id)}
+                            className="bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 px-3 py-1 rounded-md text-xs font-medium transition-colors"
+                          >
+                            Reject
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden border border-gray-200 dark:border-gray-700">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -419,15 +495,21 @@ export const Admin = () => {
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Name</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Group</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Phone</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Status</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {donors.map((donor) => (
+                {donors.filter(d => d.status !== 'pending').map((donor) => (
                   <tr key={donor.id}>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{donor.name}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{donor.blood_group}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{donor.phone}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm">
+                      <Badge variant={!donor.status || donor.status === 'approved' ? 'success' : 'danger'}>
+                        {donor.status || 'approved'}
+                      </Badge>
+                    </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                       <Link
                         to={`/donors?highlight=${donor.id}`}

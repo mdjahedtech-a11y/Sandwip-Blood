@@ -22,7 +22,11 @@ export const Donors = () => {
   const fetchDonors = async () => {
     setLoading(true);
     try {
-      let query = supabase.from('donors').select('*').order('created_at', { ascending: false });
+      let query = supabase
+        .from('donors')
+        .select('*')
+        .or('status.eq.approved,status.is.null') // Show approved or legacy (null status) donors
+        .order('created_at', { ascending: false });
 
       if (selectedBloodGroup) {
         query = query.eq('blood_group', selectedBloodGroup);

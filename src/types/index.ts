@@ -20,6 +20,7 @@ export interface Donor {
   last_donation_date: string | null;
   next_eligible_date: string | null;
   created_at: string;
+  status: 'pending' | 'approved' | 'rejected';
 }
 
 export interface EmergencyRequest {

@@ -127,6 +127,7 @@ export const Register = () => {
             area: data.area,
             photo_url: photoUrl,
             last_donation_date: data.last_donation_date || null,
+            status: 'pending', // Default status is pending approval
           },
         ]);
 
@@ -139,7 +140,7 @@ export const Register = () => {
           // Optional: Delete the auth user if donor insert fails to keep clean state
         }
       } else {
-        toast.success('Registration successful! Please login.');
+        toast.success('Registration successful! Please wait for admin approval.');
         navigate('/login');
       }
     } catch (error) {

@@ -201,7 +201,19 @@ export const Profile = () => {
                   </div>
                 )}
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{donor.name}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                {donor.name}
+                {donor.status === 'pending' && (
+                  <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 rounded-full border border-yellow-200 dark:border-yellow-800">
+                    Pending Approval
+                  </span>
+                )}
+                {donor.status === 'rejected' && (
+                  <span className="px-2 py-1 text-xs bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 rounded-full border border-red-200 dark:border-red-800">
+                    Rejected
+                  </span>
+                )}
+              </h2>
               <p className="text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1 mt-1">
                 <MapPin className="w-4 h-4" /> {donor.area}
               </p>
